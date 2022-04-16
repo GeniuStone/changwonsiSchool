@@ -1,13 +1,17 @@
-import '../sass/SearchBox.sass';
-import { VscSearch } from "react-icons/vsc";
+import { VscSearch } from 'react-icons/vsc';
 
-const SearchBox = () => {
+const SearchBox = ({ inputValue, onChangeValue }) => {
     return (
         <div className="inputBox">
-            <div className='searchIcon'>
+            <div className="searchIcon">
                 <VscSearch></VscSearch>
             </div>
-            <input type="text" placeholder="내용을 입력해주세요" />
+            <input
+                type="text"
+                placeholder="학교명을 입력해주세요"
+                onChange={onChangeValue}
+                value={inputValue}
+            />
         </div>
     );
 };
