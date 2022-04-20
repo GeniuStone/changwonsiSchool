@@ -6,6 +6,7 @@ import SchoolList from './components/SchoolList';
 import axios from 'axios';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 
 const App = () => {
     const [data, setData] = useState(null);
@@ -31,21 +32,33 @@ const App = () => {
             }
 
             setLoading(false);
-        }
+        };
 
         getData();
-    }, [])
+    }, []);
 
     const onChangeValue = (e) => {
         setInputValue(e.target.value);
-    }
+    };
 
     return (
-        <Container>
-            <Title></Title>
-            <SearchBox inputValue={inputValue} onChangeValue={onChangeValue}></SearchBox>
-            <SchoolList inputValue={inputValue} data={data} loading={loading}></SchoolList>            
-        </Container>
+        <div>
+            <Helmet>
+                <title>경상남도창원교육지원청 소속의 초등학교</title>
+            </Helmet>
+            <Container>
+                <Title></Title>
+                <SearchBox
+                    inputValue={inputValue}
+                    onChangeValue={onChangeValue}
+                ></SearchBox>
+                <SchoolList
+                    inputValue={inputValue}
+                    data={data}
+                    loading={loading}
+                ></SchoolList>
+            </Container>
+        </div>
     );
 };
 /*  */
