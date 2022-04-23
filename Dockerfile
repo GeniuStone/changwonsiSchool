@@ -1,17 +1,26 @@
-# build environment
-FROM node:9.6.1 as builder
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
-ENV PATH /usr/src/app/node_modules/.bin:$PATH
-COPY package.json /usr/src/app/package.json
-RUN npm install --silent
-RUN npm install react-scripts@1.1.1 -g --silent
-COPY . /usr/src/app
-RUN npm run build
+# nginx 설치
+FROM nginx
 
+# 프로젝트가 들어갈 폴더 생성
+RUN mkdir /app
 
-# production environment
-FROM nginx:1.13.9-alpine
-COPY --from=builder /usr/src/app/build /usr/share/nginx/html
+# app 폴더에서 작업
+WORKDIR /app 
+
+# build 폴더 생성
+RUN mkdir ./build
+
+# 현재 경로의 build 폴더를 이전에 생성한 build 폴더에 복사  
+ADD ./build ./build
+
+# nginx 기본 설정 환경 파일을 삭제하고
+RUN rm /etc/nginx/conf.d/default.conf
+
+# 호스트에서 생성한 nginx 환경 파일을 해당 경로에 복사
+ADD ./nginx.conf /etc/nginx/conf.d
+
+# 생성한 이미지에서 80번 포트를 노출하도록 설정
 EXPOSE 80
+
+# 컨테이너 실행시 수행할 동작 (nginx 시작)
 CMD ["nginx", "-g", "daemon off;"]
